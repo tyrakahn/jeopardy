@@ -1,0 +1,247 @@
+:root {
+  --stage-dark: #050818;
+  --stage-navy: #0b1550;
+  --pink: #ff2e93;
+  --pink-deep: #c9127e;
+  --pink-bright: #ff5cb3;
+  --cyan: #33e6ff;
+  --white: #ffffff;
+  --overlay-bg: rgba(3, 5, 20, 0.88);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 16px 64px;
+  position: relative;
+  overflow-x: hidden;
+  font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+  color: var(--white);
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 46, 147, 0.25), transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(51, 230, 255, 0.12), transparent 70%),
+    linear-gradient(180deg, var(--stage-dark) 0%, var(--stage-navy) 55%, #050818 100%);
+}
+
+/* --- Dekorativa scenljus högst upp --- */
+
+.stage-lights {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 42px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stage-lights span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 14px 4px var(--cyan);
+  opacity: 0.85;
+}
+
+.stage-lights span:nth-child(2n) {
+  background: var(--pink-bright);
+  box-shadow: 0 0 14px 4px var(--pink-bright);
+}
+
+.stage-lights span:nth-child(3n) {
+  transform: translateY(6px);
+}
+
+/* --- Logotyp --- */
+
+.logo {
+  margin: 0;
+  z-index: 1;
+  font-family: "Bungee", "Segoe UI", sans-serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--pink);
+  text-shadow:
+    0 0 6px var(--pink-bright),
+    0 0 18px var(--pink),
+    0 0 40px var(--pink-deep),
+    0 3px 0 #4a0027;
+  -webkit-text-stroke: 1.5px #ffd9ec;
+}
+
+.logo .bang {
+  color: var(--cyan);
+  text-shadow:
+    0 0 6px var(--cyan),
+    0 0 18px var(--cyan),
+    0 0 40px #0090a8;
+}
+
+/* --- Spelbrädet: 3 kategorier x 3 rutor --- */
+
+.board {
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 220px));
+  gap: 10px;
+  width: 100%;
+  max-width: 760px;
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+  box-shadow: 0 0 0 2px rgba(255, 46, 147, 0.25), 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.category-header {
+  background: linear-gradient(180deg, var(--pink-bright), var(--pink-deep));
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
+  padding: 14px 6px;
+  text-align: center;
+  font-family: "Bungee", sans-serif;
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  color: var(--white);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 16px rgba(255, 92, 179, 0.5);
+}
+
+.tile {
+  aspect-ratio: 4 / 3;
+  background: radial-gradient(circle at 50% 30%, #ff77bf, var(--pink) 55%, var(--pink-deep) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  color: var(--white);
+  font-family: "Bungee", sans-serif;
+  font-size: 1.8rem;
+  cursor: pointer;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 18px rgba(255, 46, 147, 0.45), inset 0 0 20px rgba(255, 255, 255, 0.15);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.tile:hover:not(.used) {
+  transform: scale(1.04);
+  filter: brightness(1.1);
+  box-shadow: 0 0 26px rgba(51, 230, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.tile.used {
+  background: linear-gradient(180deg, #1a1f45, #0d1030);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #4a5080;
+  cursor: default;
+  box-shadow: none;
+  text-shadow: none;
+  transform: none;
+  filter: none;
+}
+
+/* --- Overlay med frågan --- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10;
+}
+
+.overlay[hidden] {
+  display: none;
+}
+
+.question-card {
+  background: radial-gradient(ellipse at 50% 0%, #1a2470, var(--stage-dark) 75%);
+  border: 3px solid var(--pink);
+  border-radius: 14px;
+  max-width: 600px;
+  width: 100%;
+  padding: 40px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 0 40px rgba(255, 46, 147, 0.4), 0 0 0 6px rgba(255, 255, 255, 0.03);
+}
+
+.category-label {
+  margin: 0;
+  font-family: "Bungee", sans-serif;
+  color: var(--cyan);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 10px rgba(51, 230, 255, 0.6);
+}
+
+.question-text {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.answer-text {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--pink-bright);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 14px;
+}
+
+.answer-text[hidden] {
+  display: none;
+}
+
+button {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: transform 0.1s ease, filter 0.1s ease;
+}
+
+.show-answer-btn {
+  background: linear-gradient(180deg, var(--pink-bright), var(--pink));
+  color: var(--white);
+  align-self: center;
+  box-shadow: 0 0 16px rgba(255, 46, 147, 0.5);
+}
+
+.show-answer-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.close-btn {
+  background: transparent;
+  border: 2px solid var(--cyan);
+  color: var(--cyan);
+  align-self: center;
+}
+
+.close-btn:hover {
+  background: var(--cyan);
+  color: #002a33;
+}
